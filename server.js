@@ -1,5 +1,6 @@
 const express = require('express'),
   bodyParser = require('body-parser'),
+  router = express.Router(),
   multer = require('multer'),
   app = express(),
   storage = multer.diskStorage({
@@ -18,7 +19,7 @@ const express = require('express'),
   cpRemove = myupload.fields([{
     name: 'uid'
   }]),
-  path = require('path')
+  path = require('path'),
   fs = require('fs');
 
 // Allow CORS
@@ -29,10 +30,13 @@ const express = require('express'),
 //   next();
 // });
 
+
+
 app.use(express.static(path.join(__dirname, 'dist')));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use(function (req, res, next) {
-  let accept = req.accepts('html', 'json', 'xml'),
+  console.log("inside")
+  let accept = req.accepts('application/json', 'application/xml', 'text/plain', 'text/html', 'formData', 'html', 'json', 'xml'),
     ext = path.extname(req.path);
 
   if (req.path.startsWith('/uploads/')) {
